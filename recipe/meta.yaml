@@ -1,5 +1,5 @@
 {% set name = "trackastra" %}
-{% set version = "0.5.3" %}
+{% set version = "0.5.4" %}
 {% set python_min = "3.10" %}
 
 package:
@@ -7,12 +7,15 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/trackastra-{{ version }}.tar.gz
-  sha256: fce286745bb04345487ad3fd7dd4f8d0a893516b1678df21ee5bcf28f6db516e
+  url: https://github.com/weigertlab/trackastra/archive/refs/tags/{{ version }}.tar.gz
+  sha256: 88476d2cd445b700e21aad656165c484dee6ec4cf318bf29c4c65b815fe6419c
 
 build:
-  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  number: 2
+  script:
+    - export SETUPTOOLS_SCM_PRETEND_VERSION_FOR_TRACKASTRA={{ version }}  # [unix]
+    - set "SETUPTOOLS_SCM_PRETEND_VERSION_FOR_TRACKASTRA={{ version }}"  # [win]
+    - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  number: 0
   entry_points:
     - trackastra = trackastra.cli:cli
 
@@ -25,28 +28,26 @@ requirements:
   run:
     - python
     - numpy
-    - matplotlib-base
     - scipy
     - pandas
-    - humanize
-    - configargparse
-    - tensorboard
-    - pyyaml
-    - numba
     - scikit-image
-    - chardet
-    - lightning
-    - kornia >=0.7.0
     - pytorch
     - torchvision
-    - lz4
-    - imagecodecs >=2023.7.10
-    - wandb
+    - pyyaml
     - edt
     - joblib
-    - motile >=0.3
+    - lz4
+    - imagecodecs >=2023.7.10
+    - chardet
     - dask
-    - geff
+    - numba
+    - geff >=1
+    - tqdm
+    - requests
+    - psutil
+    - platformdirs
+    - motile >=1.0
+    - ilpy >=0.6
   run_constrained:
     - libblas * *newaccelerate  # [osx]
 
@@ -55,6 +56,7 @@ test:
     - trackastra
   commands:
     - pip check
+    - python -c "import trackastra; assert trackastra.__version__ == '{{ version }}'"
   requires:
     - pip
     - python
