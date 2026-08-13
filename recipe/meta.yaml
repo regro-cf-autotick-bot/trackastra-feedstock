@@ -1,5 +1,5 @@
 {% set name = "trackastra" %}
-{% set version = "0.5.4" %}
+{% set version = "0.5.5" %}
 {% set python_min = "3.10" %}
 
 package:
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://github.com/weigertlab/trackastra/archive/refs/tags/{{ version }}.tar.gz
-  sha256: 88476d2cd445b700e21aad656165c484dee6ec4cf318bf29c4c65b815fe6419c
+  sha256: 3d4043fa15baa7a490a06c25335dada79b11b293ef1d39cdcd04383bb3f5f121
 
 build:
   script:
